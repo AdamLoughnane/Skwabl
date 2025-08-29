@@ -1,6 +1,7 @@
 // src/screens/YelloMellowScreen.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, Vibration, Modal } from 'react-native';
+import VolumeMeter from '../components/VolumeMeter';
 
 type Speaker = 'A' | 'B' | null;
 
@@ -299,25 +300,26 @@ export default function YelloMellowScreen() {
       <View style={{ flex: 1, flexDirection: 'row' }}>
         {/* Speaker A column */}
         <View style={{ flex: 1 }}>
-          <TimerCard
-            who="A"
-            time={fmt(remainingA)}
-            isActive={active === 'A'}
-            onMainPress={() => setActive(prev => (prev === 'A' ? null : 'A'))}
-            onInterrupted={() => handleInterrupted('A')}
-          />
+            <VolumeMeter isActive={active === 'A'} />
+            <TimerCard
+              who="A"
+              time={fmt(remainingA)}
+              isActive={active === 'A'}
+              onMainPress={() => setActive(prev => (prev === 'A' ? null : 'A'))}
+              onInterrupted={() => handleInterrupted('A')}
+            />
 
-          {/* A's interrupt tokens (vertical overlapping) */}
-          <TokenStackVertical
-            who="A"
-            tokensLeft={tokensA}
-            disabled={active === 'A' || !!requestFrom}
-            onPress={() => tryInterrupt('A')}
-          />
-        </View>
+            <TokenStackVertical
+              who="A"
+              tokensLeft={tokensA}
+              disabled={active === 'A' || !!requestFrom}
+              onPress={() => tryInterrupt('A')}
+            />
+          </View>
 
         {/* Speaker B column */}
         <View style={{ flex: 1 }}>
+          <VolumeMeter isActive={active === 'B'} />
           <TimerCard
             who="B"
             time={fmt(remainingB)}
@@ -326,7 +328,6 @@ export default function YelloMellowScreen() {
             onInterrupted={() => handleInterrupted('B')}
           />
 
-          {/* B's interrupt tokens (vertical overlapping) */}
           <TokenStackVertical
             who="B"
             tokensLeft={tokensB}
